@@ -89,7 +89,20 @@ def get_weakest(units_table):
             weakest_uid = uid
     return weakest_uid
 
+    
+def get_closest(units_table, my_x, my_y):
+    min_distance = 1E30
+    closest_uid = -1
+    for uid, ut in units_table.iteritems():
+        if ut is None:
+            continue
+        tmp_dis = (ut.x - my_x) * (ut.x - my_x) + (ut.y - my_y) * (ut.y - my_y)
+        if tmp_dis < min_distance:
+            min_distance = tmp_dis
+            closest_uid = uid
+    return closest_uid
 
+    
 def progress(nloop, battles_won, battles_game, total_battles):
     print "Loop: %5d | WinRate: %1.3f | #Wins: %4d | #Battles: %4d | #TotalBattles: %4d" % (
         nloop, battles_won / (battles_game + 1E-6), battles_won, battles_game,
