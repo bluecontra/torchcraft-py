@@ -79,8 +79,10 @@ class Client:
                 else:
                     result = str(v)
             self.socket.send(result)
+            # print result
         else:
             self.socket.send(msg)
+            # print msg
 
         self.message_just_sent = True
 

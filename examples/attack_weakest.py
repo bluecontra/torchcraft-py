@@ -4,6 +4,7 @@ import numpy as np
 import torchcraft_py.proto as proto
 import torchcraft_py.torchcraft as tc
 import torchcraft_py.utils as utils
+import torchcraft_py.my_utils1 as my_utils1
 
 DEBUG = 0
 
@@ -11,7 +12,7 @@ total_battles = 0
 nrestarts = -1
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--ip', help='server ip')
+parser.add_argument('--ip', help='server ip', default='172.26.73.228')
 parser.add_argument('--port', help='server port', default='11111')
 args = parser.parse_args()
 print args
@@ -27,11 +28,11 @@ while total_battles < 40:
     # Create a client and connect to the TorchCraft server
     client = tc.Client(args.ip, args.port)
     init = client.connect()
-    if DEBUG > 0:
+    if DEBUG > 1:
         print "Received init: " + init
 
     # Setup the game
-    setup = [proto.concat_cmd(proto.commands['set_speed'], 60),
+    setup = [proto.concat_cmd(proto.commands['set_speed'], 10),
              proto.concat_cmd(proto.commands['set_gui'], 1),
              proto.concat_cmd(proto.commands['set_frameskip'], 9),
              proto.concat_cmd(proto.commands['set_cmd_optim'], 1)]
@@ -46,8 +47,12 @@ while total_battles < 40:
             utils.progress(nloop, battles_won, battles_game, total_battles)
 
         update = client.receive()
-        if DEBUG > 0:
+        if DEBUG > 1:
             print "Received state: " + update
+
+        if DEBUG > 0:
+             print my_utils1.printClientState(client)
+             print ''
 
         nloop += 1
         actions = []
